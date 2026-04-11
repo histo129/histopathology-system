@@ -1,0 +1,15 @@
+{
+  "name": "Histopathology Lab Software",
+  "short_name": "HistoLab",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0f2027",
+  "theme_color": "#00c6ff",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

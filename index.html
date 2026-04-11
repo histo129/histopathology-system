@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Histopathology System</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin:0;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+/* HEADER */
+h1 {
+    text-align:center;
+    padding:20px;
+    color:#00e6e6;
+}
+
+/* FORM */
+.form-box {
+    background:white;
+    color:black;
+    margin:20px;
+    padding:20px;
+    border-radius:10px;
+}
+
+input, select {
+    padding:10px;
+    margin:5px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+button {
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    background:#00c6ff;
+    color:white;
+    cursor:pointer;
+}
+
+/* FILTER */
+.filter {
+    display:flex;
+    gap:10px;
+    padding:20px;
+}
+
+/* CARDS */
+.cards {
+    display:flex;
+    gap:20px;
+    padding:20px;
+}
+
+.card {
+    flex:1;
+    background:#34495e;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* TABLE */
+table {
+    width:95%;
+    margin:20px;
+    background:white;
+    color:black;
+    border-collapse:collapse;
+}
+
+th, td {
+    padding:10px;
+    border:1px solid #ccc;
+}
+
+th {
+    background:#00c6ff;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Histopathology Dashboard</h1>
+
+<!-- ENTRY FORM -->
+<div class="form-box">
+<h3>Patient / Report Entry</h3>
+
+<input id="date" type="date">
+<input id="type" placeholder="Report Type">
+<input id="patho" placeholder="Patho No">
+<input id="lab" placeholder="Lab No">
+<input id="mr" placeholder="MR No">
+
+<select id="status">
+<option>IN PROCESS</option>
+<option>UNDER REVIEW</option>
+<option>VERIFIED</option>
+</select>
+
+<input id="doctor" placeholder="Verified By">
+<input id="remarks" placeholder="Remarks">
+<input id="name" placeholder="Patient Name">
+<input id="age" placeholder="Age">
+<input id="history" placeholder="History">
+<input id="diagnosis" placeholder="Diagnosis">
+
+<br><br>
+<button onclick="saveData()">Save Record</button>
+</div>
+
+<!-- FILTER -->
+<div class="filter">
+<input id="search" placeholder="Search">
+
+<select id="month">
+<option value="">All Months</option>
+<option>JANUARY</option>
+<option>FEBRUARY</option>
+<option>MARCH</option>
+<option>APRIL</option>
+<option>MAY</option>
+<option>JUNE</option>
+<option>JULY</option>
+<option>AUGUST</option>
+<option>SEPTEMBER</option>
+<option>OCTOBER</option>
+<option>NOVEMBER</option>
+<option>DECEMBER</option>
+</select>
+
+<select id="year">
+<option value="">All Years</option>
+<option>2025</option>
+<option>2026</option>
+<option>2027</option>
+</select>
+
+<select id="statusFilter">
+<option value="">All Status</option>
+<option>IN PROCESS</option>
+<option>UNDER REVIEW</option>
+<option>VERIFIED</option>
+</select>
+
+<button onclick="loadData()">Apply Filter</button>
+</div>
+
+<!-- ANALYTICS -->
+<div class="cards">
+<div class="card">Total: <span id="total">0</span></div>
+<div class="card">Process: <span id="process">0</span></div>
+<div class="card">Review: <span id="review">0</span></div>
+<div class="card">Verified: <span id="verified">0</span></div>
+</div>
+
+<!-- TABLE -->
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Type</th>
+<th>Patho</th>
+<th>Status</th>
+<th>Name</th>
+<th>Diagnosis</th>
+<th>Month</th>
+</tr>
+</thead>
+<tbody id="data"></tbody>
+</table>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbzJKohb4ehqot33YFC_mOnBUuAMwQqkFqnZ4rKOxyeGHX7JhTWWdXgYqGn6HyCLecIs/exec";
+
+/* SAVE */
+async function saveData() {
+    const data = {
+        reportDate: date.value,
+        reportType: type.value,
+        pathoNo: patho.value,
+        labNo: lab.value,
+        mrNo: mr.value,
+        status: status.value,
+        verifiedBy: doctor.value,
+        remarks: remarks.value,
+        patientName: name.value,
+        patientAge: age.value,
+        history: history.value,
+        diagnosis: diagnosis.value
+    };
+
+    await fetch(API, {
+        method:"POST",
+        body:JSON.stringify(data)
+    });
+
+    alert("Saved!");
+    loadData();
+}
+
+/* LOAD */
+async function loadData() {
+    const s = search.value;
+    const m = month.value;
+    const y = year.value;
+    const st = statusFilter.value;
+
+    let url = API + "?";
+
+    if(s) url += "search=" + s + "&";
+    if(m) url += "month=" + m + "&";
+    if(y) url += "year=" + y + "&";
+    if(st) url += "status=" + st;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    let total=0, process=0, review=0, verified=0;
+
+    document.getElementById("data").innerHTML="";
+
+    data.forEach(d => {
+        total++;
+
+        if(d["REPORT STATUS"]=="IN PROCESS") process++;
+        if(d["REPORT STATUS"]=="UNDER REVIEW") review++;
+        if(d["REPORT STATUS"]=="VERIFIED") verified++;
+
+        document.getElementById("data").innerHTML += `
+        <tr>
+        <td>${d["REPORT DATE"]}</td>
+        <td>${d["REPORT TYPE"]}</td>
+        <td>${d["PATHO NO"]}</td>
+        <td>${d["REPORT STATUS"]}</td>
+        <td>${d["PATIENT NAME"]}</td>
+        <td>${d["DIAGNOSIS"]}</td>
+        <td>${d["MONTH"] || ""}</td>
+        </tr>`;
+    });
+
+    totalEl.innerText = total;
+    processEl.innerText = process;
+    reviewEl.innerText = review;
+    verifiedEl.innerText = verified;
+}
+
+const totalEl = document.getElementById("total");
+const processEl = document.getElementById("process");
+const reviewEl = document.getElementById("review");
+const verifiedEl = document.getElementById("verified");
+
+loadData();
+</script>
+
+</body>
+</html>

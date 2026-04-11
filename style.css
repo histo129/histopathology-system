@@ -1,0 +1,73 @@
+body {
+  font-family: Arial;
+  background: #f4f7fb;
+  margin: 0;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.top-buttons {
+  text-align: center;
+  margin: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.form {
+  background: white;
+  padding: 15px;
+  margin: 20px auto;
+  width: 300px;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+}
+
+.filters {
+  text-align: center;
+  margin: 20px;
+}
+
+table {
+  width: 100%;
+  background: white;
+}
+
+th {
+  background: #2c3e50;
+  color: white;
+}
+
+td, th {
+  padding: 8px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  color: purple;
+}
