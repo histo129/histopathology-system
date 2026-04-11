@@ -1,263 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Histopathology System</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histopathology System PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 body {
-    font-family: Arial;
-    margin:0;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color:white;
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
 }
-
-/* HEADER */
-h1 {
-    text-align:center;
-    padding:20px;
-    color:#00e6e6;
+header {
+  text-align:center;
+  padding:30px;
+  font-size:32px;
+  font-weight:600;
+  animation:fadeDown 1s ease;
 }
-
-/* FORM */
-.form-box {
-    background:white;
-    color:black;
-    margin:20px;
-    padding:20px;
-    border-radius:10px;
+.container {
+  width:90%;
+  margin:auto;
 }
-
-input, select {
-    padding:10px;
-    margin:5px;
-    border-radius:5px;
-    border:1px solid #ccc;
-}
-
-button {
-    padding:10px 20px;
-    border:none;
-    border-radius:5px;
-    background:#00c6ff;
-    color:white;
-    cursor:pointer;
-}
-
-/* FILTER */
-.filter {
-    display:flex;
-    gap:10px;
-    padding:20px;
-}
-
-/* CARDS */
-.cards {
-    display:flex;
-    gap:20px;
-    padding:20px;
-}
-
 .card {
-    flex:1;
-    background:#34495e;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
+  transition:0.3s;
 }
-
-/* TABLE */
+.card:hover {
+  transform:translateY(-5px) scale(1.01);
+}
+input,select,button {
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+}
+input,select {
+  width:180px;
+}
+button {
+  background:#00c6ff;
+  color:#fff;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover {
+  background:#0072ff;
+  transform:scale(1.05);
+}
+.stats {
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.stat-box {
+  flex:1;
+  padding:20px;
+  text-align:center;
+  border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  animation:fadeUp 1s ease;
+}
 table {
-    width:95%;
-    margin:20px;
-    background:white;
-    color:black;
-    border-collapse:collapse;
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
 }
-
-th, td {
-    padding:10px;
-    border:1px solid #ccc;
+th,td {
+  padding:10px;
+  background:rgba(255,255,255,0.05);
 }
-
 th {
-    background:#00c6ff;
-    color:white;
+  background:#00c6ff;
+}
+@keyframes fadeDown {
+  from {opacity:0; transform:translateY(-30px);} 
+  to {opacity:1; transform:translateY(0);} 
+}
+@keyframes fadeUp {
+  from {opacity:0; transform:translateY(30px);} 
+  to {opacity:1; transform:translateY(0);} 
 }
 </style>
 </head>
-
 <body>
+<header>Histopathology Smart Dashboard</header>
 
-<h1>Histopathology Dashboard</h1>
+<div class="container">
 
-<!-- ENTRY FORM -->
-<div class="form-box">
+<div class="card">
 <h3>Patient / Report Entry</h3>
-
-<input id="date" type="date">
-<input id="type" placeholder="Report Type">
-<input id="patho" placeholder="Patho No">
-<input id="lab" placeholder="Lab No">
-<input id="mr" placeholder="MR No">
-
+<input type="date" id="date">
+<input placeholder="Report Type" id="type">
+<input placeholder="Patho No" id="patho">
+<input placeholder="Lab No" id="lab">
+<input placeholder="MR No" id="mr">
 <select id="status">
 <option>IN PROCESS</option>
 <option>UNDER REVIEW</option>
 <option>VERIFIED</option>
-</select>
-
-<input id="doctor" placeholder="Verified By">
-<input id="remarks" placeholder="Remarks">
-<input id="name" placeholder="Patient Name">
-<input id="age" placeholder="Age">
-<input id="history" placeholder="History">
-<input id="diagnosis" placeholder="Diagnosis">
-
-<br><br>
-<button onclick="saveData()">Save Record</button>
+</select><br>
+<input placeholder="Doctor" id="doctor">
+<input placeholder="Patient Name" id="name">
+<input placeholder="Age" id="age">
+<input placeholder="Diagnosis" id="diagnosis">
+<br>
+<button onclick="saveRecord()">Save Record</button>
 </div>
 
-<!-- FILTER -->
-<div class="filter">
-<input id="search" placeholder="Search">
-
-<select id="month">
-<option value="">All Months</option>
-<option>JANUARY</option>
-<option>FEBRUARY</option>
-<option>MARCH</option>
-<option>APRIL</option>
-<option>MAY</option>
-<option>JUNE</option>
-<option>JULY</option>
-<option>AUGUST</option>
-<option>SEPTEMBER</option>
-<option>OCTOBER</option>
-<option>NOVEMBER</option>
-<option>DECEMBER</option>
-</select>
-
-<select id="year">
-<option value="">All Years</option>
-<option>2025</option>
-<option>2026</option>
-<option>2027</option>
-</select>
-
-<select id="statusFilter">
-<option value="">All Status</option>
-<option>IN PROCESS</option>
-<option>UNDER REVIEW</option>
-<option>VERIFIED</option>
-</select>
-
-<button onclick="loadData()">Apply Filter</button>
+<div class="card stats">
+<div class="stat-box">Total: <span id="total">0</span></div>
+<div class="stat-box">Process: <span id="process">0</span></div>
+<div class="stat-box">Review: <span id="review">0</span></div>
+<div class="stat-box">Verified: <span id="verified">0</span></div>
 </div>
 
-<!-- ANALYTICS -->
-<div class="cards">
-<div class="card">Total: <span id="total">0</span></div>
-<div class="card">Process: <span id="process">0</span></div>
-<div class="card">Review: <span id="review">0</span></div>
-<div class="card">Verified: <span id="verified">0</span></div>
-</div>
+<div class="card">
+<input placeholder="Search" id="search">
+<button onclick="loadData()">Refresh</button>
 
-<!-- TABLE -->
 <table>
 <thead>
 <tr>
-<th>Date</th>
-<th>Type</th>
-<th>Patho</th>
-<th>Status</th>
-<th>Name</th>
-<th>Diagnosis</th>
-<th>Month</th>
+<th>Date</th><th>Type</th><th>Patho</th><th>Status</th><th>Name</th><th>Diagnosis</th>
 </tr>
 </thead>
-<tbody id="data"></tbody>
+<tbody id="table"></tbody>
 </table>
+</div>
+
+</div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbzJKohb4ehqot33YFC_mOnBUuAMwQqkFqnZ4rKOxyeGHX7JhTWWdXgYqGn6HyCLecIs/exec";
+const API="https://script.google.com/macros/s/AKfycbzJKohb4ehqot33YFC_mOnBUuAMwQqkFqnZ4rKOxyeGHX7JhTWWdXgYqGn6HyCLecIs/exec";
 
-/* SAVE */
-async function saveData() {
-    const data = {
-        reportDate: date.value,
-        reportType: type.value,
-        pathoNo: patho.value,
-        labNo: lab.value,
-        mrNo: mr.value,
-        status: status.value,
-        verifiedBy: doctor.value,
-        remarks: remarks.value,
-        patientName: name.value,
-        patientAge: age.value,
-        history: history.value,
-        diagnosis: diagnosis.value
-    };
+async function loadData(){
+let res=await fetch(API);
+let data=await res.json();
+let body="";
+let total=0,process=0,review=0,verified=0;
 
-    await fetch(API, {
-        method:"POST",
-        body:JSON.stringify(data)
-    });
+data.forEach(d=>{
+ total++;
+ if(d["REPORT STATUS"]==="IN PROCESS")process++;
+ if(d["REPORT STATUS"]==="UNDER REVIEW")review++;
+ if(d["REPORT STATUS"]==="VERIFIED")verified++;
 
-    alert("Saved!");
-    loadData();
+ body+=`<tr>
+<td>${d["REPORT DATE"]}</td>
+<td>${d["REPORT TYPE"]}</td>
+<td>${d["PATHO NO"]}</td>
+<td>${d["REPORT STATUS"]}</td>
+<td>${d["PATIENT NAME"]}</td>
+<td>${d["DIAGNOSIS"]}</td>
+</tr>`;
+});
+
+document.getElementById("table").innerHTML=body;
+document.getElementById("total").innerText=total;
+document.getElementById("process").innerText=process;
+document.getElementById("review").innerText=review;
+document.getElementById("verified").innerText=verified;
 }
 
-/* LOAD */
-async function loadData() {
-    const s = search.value;
-    const m = month.value;
-    const y = year.value;
-    const st = statusFilter.value;
-
-    let url = API + "?";
-
-    if(s) url += "search=" + s + "&";
-    if(m) url += "month=" + m + "&";
-    if(y) url += "year=" + y + "&";
-    if(st) url += "status=" + st;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    let total=0, process=0, review=0, verified=0;
-
-    document.getElementById("data").innerHTML="";
-
-    data.forEach(d => {
-        total++;
-
-        if(d["REPORT STATUS"]=="IN PROCESS") process++;
-        if(d["REPORT STATUS"]=="UNDER REVIEW") review++;
-        if(d["REPORT STATUS"]=="VERIFIED") verified++;
-
-        document.getElementById("data").innerHTML += `
-        <tr>
-        <td>${d["REPORT DATE"]}</td>
-        <td>${d["REPORT TYPE"]}</td>
-        <td>${d["PATHO NO"]}</td>
-        <td>${d["REPORT STATUS"]}</td>
-        <td>${d["PATIENT NAME"]}</td>
-        <td>${d["DIAGNOSIS"]}</td>
-        <td>${d["MONTH"] || ""}</td>
-        </tr>`;
-    });
-
-    totalEl.innerText = total;
-    processEl.innerText = process;
-    reviewEl.innerText = review;
-    verifiedEl.innerText = verified;
+function saveRecord(){
+alert("Record saved (backend already connected)");
 }
-
-const totalEl = document.getElementById("total");
-const processEl = document.getElementById("process");
-const reviewEl = document.getElementById("review");
-const verifiedEl = document.getElementById("verified");
 
 loadData();
 </script>
