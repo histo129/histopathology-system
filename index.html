@@ -1,150 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Histopathology Pro System</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>HistoPro System</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
-body{display:flex;background:#0f172a;color:#fff}
-
-/* SIDEBAR */
-.sidebar{
-width:240px;
-height:100vh;
-background:#020617;
-padding:20px;
-position:fixed;
-}
-.sidebar h2{
-color:#38bdf8;
-margin-bottom:30px;
-}
-.sidebar a{
-display:block;
-padding:12px;
-margin:8px 0;
-text-decoration:none;
-color:#cbd5f5;
-border-radius:8px;
-transition:.3s;
-}
-.sidebar a:hover{
-background:#1e293b;
-color:#38bdf8;
-}
-
-/* MAIN */
-.main{
-margin-left:240px;
-width:100%;
-padding:20px;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-transition:.3s;
-}
-.card:hover{transform:translateY(-4px)}
-
-input,select,button{
-padding:10px;
-margin:5px;
-border:none;
-border-radius:6px;
-}
-button{
-background:#38bdf8;
-color:#000;
-cursor:pointer;
-}
-button:hover{background:#0ea5e9}
-
-.stats{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-.stat{
-flex:1;
-text-align:center;
-padding:15px;
-background:#020617;
-border-radius:10px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-th,td{
-padding:10px;
-border-bottom:1px solid #334155;
-}
+body{margin:0;font-family:Arial;background:#0f172a;color:#fff;display:flex}
+.sidebar{width:220px;background:#020617;height:100vh;padding:20px}
+.sidebar h2{color:#38bdf8}
+.sidebar a{display:block;color:#cbd5f5;margin:10px 0;text-decoration:none}
+.main{flex:1;padding:20px}
+.card{background:#1e293b;padding:15px;border-radius:10px;margin-bottom:15px}
+input,select,button{padding:8px;margin:5px;border-radius:5px;border:none}
+button{background:#38bdf8;color:#000;cursor:pointer}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #333}
 th{background:#38bdf8;color:#000}
-
-.fade{
-animation:fade 0.6s ease}
-@keyframes fade{from{opacity:0}to{opacity:1}}
 </style>
 </head>
+
 <body>
 
 <div class="sidebar">
 <h2>HistoPro</h2>
-<a href="#">Dashboard</a>
-<a href="#">Reports</a>
-<a href="#">Analytics</a>
-<a href="#">Settings</a>
+<a>Dashboard</a>
+<a>Reports</a>
+<a>Analytics</a>
 </div>
 
 <div class="main">
 
-<div class="topbar">
-<h1>Dashboard</h1>
-</div>
-
 <div class="card">
-<h3>Patient Entry</h3>
-<input type="date" id="date">
-<input placeholder="Type" id="type">
-<input placeholder="Patho" id="patho">
-<input placeholder="Lab" id="lab">
-<input placeholder="MR" id="mr">
+<h3>Entry Form</h3>
+
+<input id="date" type="date">
+<input id="type" placeholder="Type">
+<input id="patho" placeholder="Patho No">
+<input id="lab" placeholder="Lab No">
+<input id="mr" placeholder="MR No">
+
 <select id="status">
 <option>IN PROCESS</option>
 <option>UNDER REVIEW</option>
 <option>VERIFIED</option>
 </select>
+
 <br>
-<input placeholder="Doctor" id="doctor">
-<input placeholder="Name" id="name">
-<input placeholder="Age" id="age">
-<input placeholder="Diagnosis" id="diagnosis">
+
+<input id="doctor" placeholder="Doctor">
+<input id="name" placeholder="Patient Name">
+<input id="age" placeholder="Age">
+<input id="diagnosis" placeholder="Diagnosis">
+
 <br>
+
 <button onclick="saveRecord()">Save</button>
 </div>
 
-<div class="stats">
-<div class="stat">Total: <span id="total">0</span></div>
-<div class="stat">Process: <span id="process">0</span></div>
-<div class="stat">Review: <span id="review">0</span></div>
-<div class="stat">Verified: <span id="verified">0</span></div>
-</div>
-
 <div class="card">
-<input placeholder="Search" id="search">
+<h3>Records</h3>
 <button onclick="loadData()">Refresh</button>
 
 <table>
@@ -160,21 +73,42 @@ animation:fade 0.6s ease}
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzJKohb4ehqot33YFC_mOnBUuAMwQqkFqnZ4rKOxyeGHX7JhTWWdXgYqGn6HyCLecIs/exec";
+const API = "https://script.google.com/macros/s/AKfycbzJKohb4ehqot33YFC_mOnBUuAMwQqkFqnZ4rKOxyeGHX7JhTWWdXgYqGn6HyCLecIs/exec";
 
+// SAVE
+async function saveRecord(){
+  const data = {
+    reportDate: date.value || new Date().toISOString().split('T')[0],
+    reportType: type.value,
+    pathoNo: patho.value,
+    labNo: lab.value,
+    mrNo: mr.value,
+    status: status.value,
+    verifiedBy: doctor.value,
+    remarks: "",
+    patientName: name.value,
+    patientAge: age.value,
+    history: "",
+    diagnosis: diagnosis.value
+  };
+
+  await fetch(API,{
+    method:"POST",
+    body:JSON.stringify(data)
+  });
+
+  alert("Saved!");
+  loadData();
+}
+
+// LOAD
 async function loadData(){
-let res=await fetch(API);
-let data=await res.json();
-let body="";
-let total=0,process=0,review=0,verified=0;
+  let res = await fetch(API);
+  let data = await res.json();
 
-data.forEach(d=>{
- total++;
- if(d["REPORT STATUS"]==="IN PROCESS")process++;
- if(d["REPORT STATUS"]==="UNDER REVIEW")review++;
- if(d["REPORT STATUS"]==="VERIFIED")verified++;
-
- body+=`<tr class='fade'>
+  let html="";
+  data.forEach(d=>{
+    html+=`<tr>
 <td>${d["REPORT DATE"]}</td>
 <td>${d["REPORT TYPE"]}</td>
 <td>${d["PATHO NO"]}</td>
@@ -182,17 +116,9 @@ data.forEach(d=>{
 <td>${d["PATIENT NAME"]}</td>
 <td>${d["DIAGNOSIS"]}</td>
 </tr>`;
-});
+  });
 
-document.getElementById("table").innerHTML=body;
-document.getElementById("total").innerText=total;
-document.getElementById("process").innerText=process;
-document.getElementById("review").innerText=review;
-document.getElementById("verified").innerText=verified;
-}
-
-function saveRecord(){
-alert("Connected with backend");
+  document.getElementById("table").innerHTML = html;
 }
 
 loadData();
