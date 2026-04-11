@@ -3,121 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Histopathology System PRO</title>
+<title>Histopathology Pro System</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-body {
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:#fff;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{display:flex;background:#0f172a;color:#fff}
+
+/* SIDEBAR */
+.sidebar{
+width:240px;
+height:100vh;
+background:#020617;
+padding:20px;
+position:fixed;
 }
-header {
-  text-align:center;
-  padding:30px;
-  font-size:32px;
-  font-weight:600;
-  animation:fadeDown 1s ease;
+.sidebar h2{
+color:#38bdf8;
+margin-bottom:30px;
 }
-.container {
-  width:90%;
-  margin:auto;
+.sidebar a{
+display:block;
+padding:12px;
+margin:8px 0;
+text-decoration:none;
+color:#cbd5f5;
+border-radius:8px;
+transition:.3s;
 }
-.card {
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
-  transition:0.3s;
+.sidebar a:hover{
+background:#1e293b;
+color:#38bdf8;
 }
-.card:hover {
-  transform:translateY(-5px) scale(1.01);
+
+/* MAIN */
+.main{
+margin-left:240px;
+width:100%;
+padding:20px;
 }
-input,select,button {
-  padding:10px;
-  margin:5px;
-  border:none;
-  border-radius:8px;
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
 }
-input,select {
-  width:180px;
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+transition:.3s;
 }
-button {
-  background:#00c6ff;
-  color:#fff;
-  cursor:pointer;
-  transition:0.3s;
+.card:hover{transform:translateY(-4px)}
+
+input,select,button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:6px;
 }
-button:hover {
-  background:#0072ff;
-  transform:scale(1.05);
+button{
+background:#38bdf8;
+color:#000;
+cursor:pointer;
 }
-.stats {
-  display:flex;
-  gap:15px;
-  flex-wrap:wrap;
+button:hover{background:#0ea5e9}
+
+.stats{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
 }
-.stat-box {
-  flex:1;
-  padding:20px;
-  text-align:center;
-  border-radius:12px;
-  background:rgba(255,255,255,0.1);
-  animation:fadeUp 1s ease;
+.stat{
+flex:1;
+text-align:center;
+padding:15px;
+background:#020617;
+border-radius:10px;
 }
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
+
+table{
+width:100%;
+border-collapse:collapse;
 }
-th,td {
-  padding:10px;
-  background:rgba(255,255,255,0.05);
+th,td{
+padding:10px;
+border-bottom:1px solid #334155;
 }
-th {
-  background:#00c6ff;
-}
-@keyframes fadeDown {
-  from {opacity:0; transform:translateY(-30px);} 
-  to {opacity:1; transform:translateY(0);} 
-}
-@keyframes fadeUp {
-  from {opacity:0; transform:translateY(30px);} 
-  to {opacity:1; transform:translateY(0);} 
-}
+th{background:#38bdf8;color:#000}
+
+.fade{
+animation:fade 0.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 <body>
-<header>Histopathology Smart Dashboard</header>
 
-<div class="container">
+<div class="sidebar">
+<h2>HistoPro</h2>
+<a href="#">Dashboard</a>
+<a href="#">Reports</a>
+<a href="#">Analytics</a>
+<a href="#">Settings</a>
+</div>
+
+<div class="main">
+
+<div class="topbar">
+<h1>Dashboard</h1>
+</div>
 
 <div class="card">
-<h3>Patient / Report Entry</h3>
+<h3>Patient Entry</h3>
 <input type="date" id="date">
-<input placeholder="Report Type" id="type">
-<input placeholder="Patho No" id="patho">
-<input placeholder="Lab No" id="lab">
-<input placeholder="MR No" id="mr">
+<input placeholder="Type" id="type">
+<input placeholder="Patho" id="patho">
+<input placeholder="Lab" id="lab">
+<input placeholder="MR" id="mr">
 <select id="status">
 <option>IN PROCESS</option>
 <option>UNDER REVIEW</option>
 <option>VERIFIED</option>
-</select><br>
+</select>
+<br>
 <input placeholder="Doctor" id="doctor">
-<input placeholder="Patient Name" id="name">
+<input placeholder="Name" id="name">
 <input placeholder="Age" id="age">
 <input placeholder="Diagnosis" id="diagnosis">
 <br>
-<button onclick="saveRecord()">Save Record</button>
+<button onclick="saveRecord()">Save</button>
 </div>
 
-<div class="card stats">
-<div class="stat-box">Total: <span id="total">0</span></div>
-<div class="stat-box">Process: <span id="process">0</span></div>
-<div class="stat-box">Review: <span id="review">0</span></div>
-<div class="stat-box">Verified: <span id="verified">0</span></div>
+<div class="stats">
+<div class="stat">Total: <span id="total">0</span></div>
+<div class="stat">Process: <span id="process">0</span></div>
+<div class="stat">Review: <span id="review">0</span></div>
+<div class="stat">Verified: <span id="verified">0</span></div>
 </div>
 
 <div class="card">
@@ -151,7 +174,7 @@ data.forEach(d=>{
  if(d["REPORT STATUS"]==="UNDER REVIEW")review++;
  if(d["REPORT STATUS"]==="VERIFIED")verified++;
 
- body+=`<tr>
+ body+=`<tr class='fade'>
 <td>${d["REPORT DATE"]}</td>
 <td>${d["REPORT TYPE"]}</td>
 <td>${d["PATHO NO"]}</td>
@@ -169,7 +192,7 @@ document.getElementById("verified").innerText=verified;
 }
 
 function saveRecord(){
-alert("Record saved (backend already connected)");
+alert("Connected with backend");
 }
 
 loadData();
