@@ -1,102 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Histopathology System</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
 
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: Arial;
+    margin: 0;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color: white;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    background: #111;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: #222;
+    color: white;
+    cursor: pointer;
+}
+
+.tabs button:hover {
+    background: #00c6ff;
+}
+
+.active {
+    background: #00c6ff !important;
+}
+
+/* CONTENT */
+.tab-content {
+    display: none;
     padding: 20px;
 }
 
-/* HEADER */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 32px;
-    background: linear-gradient(90deg, #00f2fe, #4facfe);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-/* CARD STYLE */
-.card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(12px);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
+.show {
+    display: block;
 }
 
 /* FORM */
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-    gap: 10px;
-}
-
 input, select {
     padding: 10px;
-    border-radius: 8px;
+    margin: 5px;
+    border-radius: 5px;
     border: none;
-    outline: none;
 }
 
 /* BUTTON */
-button {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
+button.save {
     background: #00c6ff;
+    padding: 10px;
+    border: none;
     color: white;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #0072ff;
 }
 
 /* STATS */
 .stats {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 15px;
+    display: flex;
+    gap: 10px;
 }
 
-.stat-box {
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
+.stat {
+    flex: 1;
     background: rgba(255,255,255,0.1);
-}
-
-.stat-box h2 {
-    font-size: 22px;
+    padding: 15px;
+    text-align: center;
 }
 
 /* TABLE */
 table {
     width: 100%;
-    border-collapse: collapse;
     margin-top: 20px;
+    border-collapse: collapse;
 }
 
 th, td {
@@ -108,117 +93,155 @@ th {
     background: rgba(255,255,255,0.2);
 }
 
-tr {
-    background: rgba(255,255,255,0.05);
-}
-
-/* ANIMATION */
-.fade {
-    animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(10px);}
-    to {opacity: 1; transform: translateY(0);}
-}
-
 </style>
 </head>
 
 <body>
 
-<h1>Histopathology Dashboard</h1>
+<h2 style="text-align:center;">Histopathology System</h2>
 
-<!-- FORM -->
-<div class="card fade">
-    <h3>Patient / Report Entry</h3>
-
-    <div class="form-grid">
-        <input type="date" id="date">
-        <input type="text" placeholder="Report Type" id="type">
-        <input type="text" placeholder="Patho No" id="patho">
-        <input type="text" placeholder="Lab No" id="lab">
-        <input type="text" placeholder="MR No" id="mr">
-
-        <select id="status">
-            <option>IN PROCESS</option>
-            <option>REVIEW</option>
-            <option>VERIFIED</option>
-        </select>
-
-        <input type="text" placeholder="Verified By" id="doctor">
-        <input type="text" placeholder="Patient Name" id="name">
-        <input type="number" placeholder="Age" id="age">
-        <input type="text" placeholder="Diagnosis" id="diagnosis">
-    </div>
-
-    <br>
-    <button onclick="saveRecord()">Save Record</button>
+<!-- TABS -->
+<div class="tabs">
+    <button onclick="openTab('patient')" class="active">Patient Record</button>
+    <button onclick="openTab('report')">Report Entry</button>
+    <button onclick="openTab('dashboard')">Case Dashboard</button>
 </div>
+
+<!-- PATIENT TAB -->
+<div id="patient" class="tab-content show">
+
+<h3>Patient Record (Google Sheet)</h3>
+
+<input type="date" id="p_date">
+<input type="text" id="p_name" placeholder="Patient Name">
+<input type="number" id="p_age" placeholder="Age">
+<input type="text" id="p_mr" placeholder="MR No">
+
+<br>
+<button class="save" onclick="savePatient()">Save Patient</button>
+
+</div>
+
+<!-- REPORT TAB -->
+<div id="report" class="tab-content">
+
+<h3>Report Entry (Google Docs)</h3>
+
+<input type="text" placeholder="Report Title">
+<input type="text" placeholder="Patient Name">
+<input type="text" placeholder="Diagnosis">
+
+<br>
+<button class="save">Save Report</button>
+
+<p>👉 (Next upgrade me Google Docs auto generate karenge)</p>
+
+</div>
+
+<!-- DASHBOARD TAB -->
+<div id="dashboard" class="tab-content">
+
+<h3>Case Dashboard</h3>
+
+<!-- FILTER -->
+<input type="text" id="search" placeholder="Search">
+<select id="statusFilter">
+    <option value="">All</option>
+    <option>IN PROCESS</option>
+    <option>REVIEW</option>
+    <option>VERIFIED</option>
+</select>
+
+<button onclick="display()">Apply Filter</button>
 
 <!-- STATS -->
 <div class="stats">
-    <div class="stat-box"><h2 id="total">0</h2><p>Total</p></div>
-    <div class="stat-box"><h2 id="process">0</h2><p>Process</p></div>
-    <div class="stat-box"><h2 id="review">0</h2><p>Review</p></div>
-    <div class="stat-box"><h2 id="verified">0</h2><p>Verified</p></div>
+    <div class="stat">Total: <span id="total">0</span></div>
+    <div class="stat">Process: <span id="process">0</span></div>
+    <div class="stat">Review: <span id="review">0</span></div>
+    <div class="stat">Verified: <span id="verified">0</span></div>
 </div>
 
 <!-- TABLE -->
-<div class="card fade">
 <table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Diagnosis</th>
-        </tr>
-    </thead>
-    <tbody id="tableData"></tbody>
+<tr>
+<th>Date</th>
+<th>Name</th>
+<th>Status</th>
+</tr>
+<tbody id="table"></tbody>
 </table>
+
 </div>
 
 <script>
 
-let records = JSON.parse(localStorage.getItem("records")) || [];
+let cases = JSON.parse(localStorage.getItem("cases")) || [];
 
-function saveRecord(){
-    let record = {
-        date: document.getElementById("date").value,
-        name: document.getElementById("name").value,
-        status: document.getElementById("status").value,
-        diagnosis: document.getElementById("diagnosis").value
+/* TAB SWITCH */
+function openTab(tab) {
+    document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("show"));
+    document.getElementById(tab).classList.add("show");
+
+    document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+    event.target.classList.add("active");
+}
+
+/* SAVE PATIENT */
+function savePatient() {
+
+    let data = {
+        date: document.getElementById("p_date").value,
+        name: document.getElementById("p_name").value,
+        age: document.getElementById("p_age").value,
+        mr: document.getElementById("p_mr").value,
+        status: "IN PROCESS"
     };
 
-    records.push(record);
-    localStorage.setItem("records", JSON.stringify(records));
+    cases.push(data);
+    localStorage.setItem("cases", JSON.stringify(cases));
 
+    // GOOGLE SHEET SEND
+    fetch("YOUR_GOOGLE_SCRIPT_URL", {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
+
+    alert("Saved!");
     display();
 }
 
-function display(){
-    let table = document.getElementById("tableData");
+/* DISPLAY DASHBOARD */
+function display() {
+
+    let table = document.getElementById("table");
     table.innerHTML = "";
 
-    let process=0, review=0, verified=0;
+    let search = document.getElementById("search").value.toLowerCase();
+    let statusFilter = document.getElementById("statusFilter").value;
 
-    records.forEach(r => {
+    let total=0, process=0, review=0, verified=0;
+
+    cases.forEach(c => {
+
+        if(search && !c.name.toLowerCase().includes(search)) return;
+        if(statusFilter && c.status != statusFilter) return;
+
         table.innerHTML += `
         <tr>
-            <td>${r.date}</td>
-            <td>${r.name}</td>
-            <td>${r.status}</td>
-            <td>${r.diagnosis}</td>
-        </tr>
-        `;
+            <td>${c.date}</td>
+            <td>${c.name}</td>
+            <td>${c.status}</td>
+        </tr>`;
 
-        if(r.status==="IN PROCESS") process++;
-        if(r.status==="REVIEW") review++;
-        if(r.status==="VERIFIED") verified++;
+        total++;
+
+        if(c.status=="IN PROCESS") process++;
+        if(c.status=="REVIEW") review++;
+        if(c.status=="VERIFIED") verified++;
     });
 
-    document.getElementById("total").innerText = records.length;
+    document.getElementById("total").innerText = total;
     document.getElementById("process").innerText = process;
     document.getElementById("review").innerText = review;
     document.getElementById("verified").innerText = verified;
