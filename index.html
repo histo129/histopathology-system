@@ -1,86 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Histo Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histo Lab Pro</title>
 
 <style>
 
-/* VIDEO BACKGROUND */
+/* BACKGROUND VIDEO */
 video {
     position: fixed;
-    right: 100;
-    bottom: 100;
-    min-width: 250%;
-    min-height: 250%;
-    z-index: -250;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    z-index: -2;
 }
 
-/* DARK OVERLAY */
 .overlay {
     position: fixed;
-    width: 250%;
-    height: 250%;
-    background: rgba(0,0,0,0.5);
-    z-index: -250;
+    width: 100%;
+    height: 100%;
+    background: rgba(10,15,25,0.85);
+    z-index: -1;
 }
 
-/* BODY */
+/* GLOBAL */
 body {
-    font-family: Arial;
     margin: 0;
+    font-family: 'Segoe UI', sans-serif;
     color: white;
 }
 
-/* HEADER */
-h2 {
-    text-align: center;
-    padding: 20px;
-    font-size: 28px;
-    letter-spacing: 1px;
-    animation: fadeIn 2s ease;
-}
-
-/* TABS */
-.tabs {
+/* LAYOUT */
+.container {
     display: flex;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
 }
 
-.tabs button {
-    flex: 1;
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(15px);
+    padding-top: 20px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #00eaff;
+}
+
+.sidebar button {
+    width: 100%;
     padding: 15px;
     border: none;
     background: transparent;
     color: white;
+    text-align: left;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.tabs button:hover {
-    background: #00c6ff;
+.sidebar button:hover {
+    background: rgba(0,255,255,0.2);
 }
 
 .active {
     background: #00c6ff !important;
 }
 
-/* CONTENT */
-.tab-content {
-    display: none;
+/* MAIN */
+.main {
+    margin-left: 220px;
     padding: 20px;
-    animation: fadeIn 1s ease;
+    width: 100%;
 }
 
-.show {
-    display: block;
+/* TOPBAR */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-/* GLASS CARD */
+.title {
+    font-size: 24px;
+    color: #00eaff;
+}
+
+/* CARDS */
 .card {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.08);
     padding: 20px;
     border-radius: 12px;
     backdrop-filter: blur(10px);
@@ -89,10 +100,11 @@ h2 {
 }
 
 .card:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0,255,255,0.3);
 }
 
-/* INPUT */
+/* FORM */
 input, select {
     padding: 10px;
     margin: 5px;
@@ -102,18 +114,18 @@ input, select {
 }
 
 /* BUTTON */
-button.save {
-    background: #00c6ff;
-    padding: 10px;
+.btn {
+    background: linear-gradient(45deg,#00c6ff,#0072ff);
     border: none;
+    padding: 10px 15px;
     color: white;
     cursor: pointer;
     border-radius: 8px;
     transition: 0.3s;
 }
 
-button.save:hover {
-    background: #0072ff;
+.btn:hover {
+    transform: scale(1.05);
 }
 
 /* STATS */
@@ -124,16 +136,15 @@ button.save:hover {
 
 .stat {
     flex: 1;
-    background: rgba(255,255,255,0.1);
-    padding: 15px;
     text-align: center;
+    padding: 15px;
+    background: rgba(255,255,255,0.08);
     border-radius: 10px;
 }
 
 /* TABLE */
 table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
 }
 
@@ -146,10 +157,19 @@ th {
     background: rgba(255,255,255,0.2);
 }
 
-/* ANIMATION */
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(10px);}
-    to {opacity: 1; transform: translateY(0);}
+/* TABS */
+.tab {
+    display: none;
+    animation: fade 0.5s ease;
+}
+
+.show {
+    display: block;
+}
+
+@keyframes fade {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
 }
 
 </style>
@@ -159,61 +179,56 @@ th {
 
 <!-- VIDEO -->
 <video autoplay muted loop>
-    <source src="bg.mp4" type="video/mp4">
+<source src="bg.mp4" type="video/mp4">
 </video>
-
 <div class="overlay"></div>
 
-<h2>Histo Lab Management System</h2>
+<div class="container">
 
-<!-- TABS -->
-<div class="tabs">
-    <button onclick="openTab('patient')" class="active">Patient Record</button>
-    <button onclick="openTab('report')">Report Entry</button>
-    <button onclick="openTab('dashboard')">Histo Lab</button>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>Histo Lab</h2>
+
+<button onclick="openTab('patient')" class="active">Patient Record</button>
+<button onclick="openTab('report')">Report Entry</button>
+<button onclick="openTab('dashboard')">Dashboard</button>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="topbar">
+<div class="title">Dashboard Overview</div>
 </div>
 
 <!-- PATIENT -->
-<div id="patient" class="tab-content show">
+<div id="patient" class="tab show">
 <div class="card">
-<h3>Patient Record</h3>
+<h3>Patient Entry</h3>
 
-<input type="date" id="p_date">
-<input type="text" id="p_name" placeholder="Patient Name">
-<input type="number" id="p_age" placeholder="Age">
-<input type="text" id="p_mr" placeholder="MR No">
+<input type="date" id="date">
+<input type="text" id="name" placeholder="Name">
+<input type="number" id="age" placeholder="Age">
 
 <br>
-<button class="save" onclick="savePatient()">Save Patient</button>
+<button class="btn" onclick="save()">Save</button>
+
 </div>
 </div>
 
 <!-- REPORT -->
-<div id="report" class="tab-content">
+<div id="report" class="tab">
 <div class="card">
 <h3>Report Entry</h3>
-<input type="text" placeholder="Report Title">
 <input type="text" placeholder="Diagnosis">
 <br>
-<button class="save">Save Report</button>
+<button class="btn">Save Report</button>
 </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="tab-content">
-
-<div class="card">
-<h3>Histo Lab Dashboard</h3>
-
-<input type="text" id="search" placeholder="Search">
-<select id="statusFilter">
-<option value="">All</option>
-<option>IN PROCESS</option>
-<option>REVIEW</option>
-<option>VERIFIED</option>
-</select>
-
-<button onclick="display()">Apply</button>
+<div id="dashboard" class="tab">
 
 <div class="stats">
 <div class="stat">Total: <span id="total">0</span></div>
@@ -222,67 +237,59 @@ th {
 <div class="stat">Verified: <span id="verified">0</span></div>
 </div>
 
+<div class="card">
 <table>
 <tr><th>Date</th><th>Name</th><th>Status</th></tr>
 <tbody id="table"></tbody>
 </table>
+</div>
+
+</div>
 
 </div>
 </div>
 
 <script>
 
-let cases = JSON.parse(localStorage.getItem("cases")) || [];
+let data = JSON.parse(localStorage.getItem("data")) || [];
 
-function openTab(tab) {
-    document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("show"));
-    document.getElementById(tab).classList.add("show");
-
-    document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-    event.target.classList.add("active");
+function openTab(id){
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("show"));
+document.getElementById(id).classList.add("show");
 }
 
-function savePatient() {
-    let data = {
-        date: document.getElementById("p_date").value,
-        name: document.getElementById("p_name").value,
-        age: document.getElementById("p_age").value,
-        status: "IN PROCESS"
-    };
+function save(){
+let record = {
+date: document.getElementById("date").value,
+name: document.getElementById("name").value,
+status: "IN PROCESS"
+};
 
-    cases.push(data);
-    localStorage.setItem("cases", JSON.stringify(cases));
+data.push(record);
+localStorage.setItem("data", JSON.stringify(data));
 
-    alert("Saved!");
-    display();
+display();
 }
 
-function display() {
+function display(){
 
-    let table = document.getElementById("table");
-    table.innerHTML = "";
+let table = document.getElementById("table");
+table.innerHTML = "";
 
-    let total=0, process=0, review=0, verified=0;
+let process=0,review=0,verified=0;
 
-    cases.forEach(c => {
+data.forEach(r=>{
+table.innerHTML += `<tr><td>${r.date}</td><td>${r.name}</td><td>${r.status}</td></tr>`;
 
-        table.innerHTML += `
-        <tr>
-        <td>${c.date}</td>
-        <td>${c.name}</td>
-        <td>${c.status}</td>
-        </tr>`;
+if(r.status=="IN PROCESS") process++;
+if(r.status=="REVIEW") review++;
+if(r.status=="VERIFIED") verified++;
+});
 
-        total++;
-        if(c.status=="IN PROCESS") process++;
-        if(c.status=="REVIEW") review++;
-        if(c.status=="VERIFIED") verified++;
-    });
-
-    document.getElementById("total").innerText = total;
-    document.getElementById("process").innerText = process;
-    document.getElementById("review").innerText = review;
-    document.getElementById("verified").innerText = verified;
+document.getElementById("total").innerText = data.length;
+document.getElementById("process").innerText = process;
+document.getElementById("review").innerText = review;
+document.getElementById("verified").innerText = verified;
 }
 
 display();
